@@ -66,7 +66,6 @@ int CFileView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_wndFileView.SetImageList(&m_FileViewImages, TVSIL_NORMAL);
 
 	// Fill in some static tree view data (dummy code, nothing magic here)
-
 	FillFileView();
 	AdjustLayout();
 
@@ -83,20 +82,10 @@ void CFileView::GetDirectories(CString sPath) {
 	CFileFind finder;
 	BOOL bFind=finder.FindFile(sPath);
 
-	//if (hRoot == NULL) {
-	//	hRoot=m_wndFileView.InsertItem(sPath, 0, 0);
-	//	m_wndFileView.SetItemState(hRoot, TVIS_BOLD, TVIS_BOLD);
-	//}
-
-
-
-
 	while (bFind)
 	{
 		bFind=finder.FindNextFileW();
-
 		if (finder.IsDots())
-
 			continue;
 
 		if (finder.IsDirectory())
@@ -104,11 +93,7 @@ void CFileView::GetDirectories(CString sPath) {
 			CollectionFolder.push_back(finder.GetFilePath());
 			GetDirectories(finder.GetFilePath() + _T("\\*.*"));
 		}
-
 	}
-
-
-
 	finder.Close();
 }
 
@@ -117,36 +102,21 @@ void CFileView::FillFileView()
 	CString myPath=L"F:\\Steam\\steamapps\\common\\Fallout 4\\Data\\Meshes\\Actors\\Character\\Animations";
 	GetDirectories(myPath);
 	CFileFind findernew;
-	//HTREEITEM TempItem;
 	bool hasFiles=false;
 	hRoot=m_wndFileView.InsertItem(myPath, 0, 0);
 	m_wndFileView.SetItemState(hRoot, TVIS_BOLD, TVIS_BOLD);
 
 	for (int i=0; i < CollectionFolder.size(); i++) {
-		//std::wcout << CollectionFolder[i].GetString() << std::endl;
 
 		if (CollectionFolder[i] == myPath) 
 		{
-
 			hSrc=m_wndFileView.InsertItem(CollectionFolder[i], i, i, hRoot);
 		} 
 		else
 		{
-			//for (auto it=std::filesystem::directory_iterator(LPCTSTR(CollectionFolder[i])); it != std::filesystem::directory_iterator(); ++it) {
-			//	if (std::filesystem::is_regular_file(LPCTSTR(CollectionFolder[i]))) {
-			//		std::cout << " is a regular file\n";
-			//		hasFiles=true;
-			//	}
-			//	if (std::filesystem::is_directory(LPCTSTR(CollectionFolder[i]))) {
-			//		std::cout << " is a regular directory\n";
-			//	}
-			//}
-
 			CString deletion=CollectionFolder[i];
 			deletion.Delete(0, myPath.GetLength());
-			//if (hasFiles == true) {
-				hSrc=m_wndFileView.InsertItem(deletion, i, i, hRoot);
-			//}
+			hSrc=m_wndFileView.InsertItem(deletion, i, i, hRoot);
 		}
 	
 		// start working for files
@@ -160,47 +130,12 @@ void CFileView::FillFileView()
 				CString Temp=findernew.GetFileName();
 				int totalLength=Temp.GetLength();
 				Temp.Delete(0, totalLength - 4);
-				//Temp.Right(totalLength-4);
 				if (Temp == ".hkx") {
 					m_wndFileView.InsertItem(findernew.GetFileName(), i, i, hSrc);
 				}
 			}
 		}
-		//hasFiles=false;
-
 	}
-		
-	//for (int i=0; i < m_wndFileView.GetCount(); i++)
-	//{
-		//HTREEITEM hItem=m_wndFileView.GetFirstVisibleItem();
-				
-	//}
-	//m_wndFileView.InsertItem(_T("FakeApp.cpp"), 1, 1, hSrc);
-	//m_wndFileView.InsertItem(_T("FakeApp.rc"), 1, 1, hSrc);
-	//m_wndFileView.InsertItem(_T("FakeAppDoc.cpp"), 1, 1, hSrc);
-	//m_wndFileView.InsertItem(_T("FakeAppView.cpp"), 1, 1, hSrc);
-	//m_wndFileView.InsertItem(_T("MainFrm.cpp"), 1, 1, hSrc);
-	//m_wndFileView.InsertItem(_T("pch.cpp"), 1, 1, hSrc);
-
-	//HTREEITEM hInc=m_wndFileView.InsertItem(_T("FakeApp Header Files"), 0, 0, hRoot);
-
-	//m_wndFileView.InsertItem(_T("FakeApp.h"), 2, 2, hInc);
-	//m_wndFileView.InsertItem(_T("FakeAppDoc.h"), 2, 2, hInc);
-	//m_wndFileView.InsertItem(_T("FakeAppView.h"), 2, 2, hInc);
-	//m_wndFileView.InsertItem(_T("Resource.h"), 2, 2, hInc);
-	//m_wndFileView.InsertItem(_T("MainFrm.h"), 2, 2, hInc);
-	//m_wndFileView.InsertItem(_T("pch.h"), 2, 2, hInc);
-
-	//HTREEITEM hRes=m_wndFileView.InsertItem(_T("FakeApp Resource Files"), 0, 0, hRoot);
-
-	//m_wndFileView.InsertItem(_T("FakeApp.ico"), 2, 2, hRes);
-	//m_wndFileView.InsertItem(_T("FakeApp.rc2"), 2, 2, hRes);
-	//m_wndFileView.InsertItem(_T("FakeAppDoc.ico"), 2, 2, hRes);
-	//m_wndFileView.InsertItem(_T("FakeToolbar.bmp"), 2, 2, hRes);
-
-	//m_wndFileView.Expand(hRoot, TVE_EXPAND);
-	//m_wndFileView.Expand(hSrc, TVE_EXPAND);
-	//m_wndFileView.Expand(hInc, TVE_EXPAND);
 }
 
 void CFileView::OnContextMenu(CWnd* pWnd, CPoint point)

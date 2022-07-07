@@ -39,11 +39,11 @@
 namespace ozz {
 namespace io {
 
-void Extern<Mesh::Part>::Save(OArchive& _archive,
-                                      const Mesh::Part* _parts,
+void Extern<ozz::Mesh::Part>::Save(OArchive& _archive,
+                                      const ozz::Mesh::Part* _parts,
                                       size_t _count) {
   for (size_t i = 0; i < _count; ++i) {
-    const Mesh::Part& part = _parts[i];
+    const ozz::Mesh::Part& part = _parts[i];
     _archive << part.positions;
     _archive << part.normals;
     _archive << part.tangents;
@@ -54,12 +54,12 @@ void Extern<Mesh::Part>::Save(OArchive& _archive,
   }
 }
 
-void Extern<Mesh::Part>::Load(IArchive& _archive,
-                                      Mesh::Part* _parts, size_t _count,
+void Extern<ozz::Mesh::Part>::Load(IArchive& _archive,
+    ozz::Mesh::Part* _parts, size_t _count,
                                       uint32_t _version) {
   (void)_version;
   for (size_t i = 0; i < _count; ++i) {
-    Mesh::Part& part = _parts[i];
+    ozz::Mesh::Part& part = _parts[i];
     _archive >> part.positions;
     _archive >> part.normals;
     _archive >> part.tangents;
@@ -70,10 +70,10 @@ void Extern<Mesh::Part>::Load(IArchive& _archive,
   }
 }
 
-void Extern<Mesh>::Save(OArchive& _archive, const Mesh* _meshes,
+void Extern<ozz::Mesh>::Save(OArchive& _archive, const ozz::Mesh* _meshes,
                                 size_t _count) {
   for (size_t i = 0; i < _count; ++i) {
-    const Mesh mesh = _meshes[i];
+    const ozz::Mesh mesh = _meshes[i];
     _archive << mesh.parts;
     _archive << mesh.triangle_indices;
     _archive << mesh.joint_remaps;
@@ -81,15 +81,16 @@ void Extern<Mesh>::Save(OArchive& _archive, const Mesh* _meshes,
   }
 }
 
-void Extern<Mesh>::Load(IArchive& _archive, Mesh* _meshes,
+void Extern<ozz::Mesh>::Load(IArchive& _archive, ozz::Mesh* _meshes,
                                 size_t _count, uint32_t _version) {
   (void)_version;
   for (size_t i = 0; i < _count; ++i) {
-    Mesh mesh = _meshes[i];
-    _archive >> mesh.parts;
-    _archive >> mesh.triangle_indices;
-    _archive >> mesh.joint_remaps;
-    _archive >> mesh.inverse_bind_poses;
+    ozz::Mesh mesh = _meshes[i];
+    _archive >> _meshes[i].parts;
+    _archive >> _meshes[i].triangle_indices;
+    _archive >> _meshes[i].joint_remaps;
+    _archive >> _meshes[i].inverse_bind_poses;
+
   }
 }
 }  // namespace io

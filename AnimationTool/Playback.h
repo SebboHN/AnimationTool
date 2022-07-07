@@ -139,9 +139,7 @@ OZZ_OPTIONS_DECLARE_STRING(mesh,
 
             // Skeleton and animation needs to match.
             if (skeleton_.num_joints() != animation_.num_tracks()) {
-                ozz::log::Err() << "The provided animation doesn't match skeleton "
-                    "(joint count mismatch)."
-                    << std::endl;
+                ozz::log::Err() << "The provided animation doesn't match skeleton (joint count mismatch)." << std::endl;
                 return false;
             }
 
@@ -155,7 +153,7 @@ OZZ_OPTIONS_DECLARE_STRING(mesh,
             context_.Resize(num_joints);
 
             // Reading skinned meshes.
-            if (!ozz::LoadMeshes(OPTIONS_mesh, &meshes_)) {
+            if (!LoadMeshes(OPTIONS_mesh, &meshes_)) {
                 return false;
             }
 
@@ -166,8 +164,7 @@ OZZ_OPTIONS_DECLARE_STRING(mesh,
             // the number of matrices required is the size of joint_remaps.
             size_t num_skinning_matrices = 0;
             for (const ozz::Mesh& mesh : meshes_) {
-                num_skinning_matrices =
-                    ozz::math::Max(num_skinning_matrices, mesh.joint_remaps.size());
+                num_skinning_matrices = ozz::math::Max(num_skinning_matrices, mesh.joint_remaps.size());
             }
 
             // Allocates skinning matrices.
@@ -177,16 +174,13 @@ OZZ_OPTIONS_DECLARE_STRING(mesh,
             // doesn't expect more joints than the skeleton has.
             for (const ozz::Mesh& mesh : meshes_) {
                 if (num_joints < mesh.highest_joint_index()) {
-                    ozz::log::Err() << "The provided mesh doesn't match skeleton "
-                        "(joint count mismatch)."
-                        << std::endl;
+                    ozz::log::Err() << "The provided mesh doesn't match skeleton (joint count mismatch)." << std::endl;
                     return false;
                 }
             }
-
             return true;
         }
-
+        
         virtual void OnDestroy() {}
 
         virtual bool OnGui(ozz::ImGui* _im_gui) {

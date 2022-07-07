@@ -389,17 +389,17 @@ bool LoadMesh(const char* _filename, ozz::Mesh* _mesh) {
   return true;
 }
 
-bool LoadMeshes(const char* _filename,
-                ozz::vector<ozz::Mesh>* _meshes) {
+bool LoadMeshes(const char* _filename, ozz::vector<ozz::Mesh>* _meshes) {
   assert(_filename && _meshes);
-  ozz::log::Out() << "Loading meshes archive: " << _filename << "."
-                  << std::endl;
+
+  ozz::log::Out() << "Loading meshes archive: " << _filename << "." << std::endl;
   ozz::io::File file(_filename, "rb");
+
   if (!file.opened()) {
-    ozz::log::Err() << "Failed to open mesh file " << _filename << "."
-                    << std::endl;
+    ozz::log::Err() << "Failed to open mesh file " << _filename << "." << std::endl;
     return false;
   }
+
   ozz::io::IArchive archive(&file);
 
   while (archive.TestTag<ozz::Mesh>()) {
